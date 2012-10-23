@@ -1,0 +1,23 @@
+AddHandler cgi-script .el .elc
+DirectoryIndex oh.el
+
+Options +ExecCGI +FollowSymLinks
+
+AddDefaultCharset UTF-8
+DefaultLanguage es-MX
+AddType text/html .html .el
+
+RewriteEngine On
+RewriteBase /cgi
+RewriteRule ^([^/]+)$ /cgi/$1/ [QSA]
+RewriteRule ^([a-zA-Z0-9]+)(/.*)$ /cgi/oh.el?ns=top&id=$1&rest=$2 [PT,QSA]
+RewriteRule ^([a-zA-Z0-9]+):([a-zA-Z0-9]+)(/.*)$ /cgi/oh.el?ns=$1&id=$2&rest=$3 [PT,QSA]
+
+ErrorDocument 404 /cgi/oh.el?error=404
+
+#RewriteCond "%{QUERY_STRING}" ^(.*)&(.*)$
+#RewriteRule ^(.*)$ $1?%1;%2
+#RewriteCond "%{QUERY_STRING}" ^(.*)=(.*)$
+#RewriteRule ^(.*)$ $1?"%1":"%2"
+#RewriteCond "%{QUERY_STRING}" ^([^=&]+)$
+#RewriteRule ^(.*)$ $1?{%1}
